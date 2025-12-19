@@ -4,13 +4,16 @@ from dotenv import load_dotenv
 import os
 import asyncio
 
+# Charger le .env
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
+# Intents
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
+# On affiche un message à la connexion et on synchronise les slash commands
 @bot.event
 async def on_ready():
     print(f"Bot connecté en tant que {bot.user}")
@@ -20,11 +23,12 @@ async def on_ready():
     except Exception as e:
         print(e)
 
-# charger les cogs correctement (async)
+# Charger les cogs avec await pour les slash commands
 async def load_cogs():
     for ext in ["cogs.enigmes", "cogs.archives"]:
         await bot.load_extension(ext)
 
 asyncio.run(load_cogs())
 
+# Lancer le bot
 bot.run(TOKEN)

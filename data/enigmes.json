@@ -1,0 +1,32 @@
+[
+    {   
+        "id": 1,
+        "question": "Je suis le roi des dieux dans la mythologie grecque, qui suis-je ?",
+        "reponse": "zeus",
+        "indice": "Je lance des éclairs"
+    },
+    {
+        "id": 2,
+        "question": "Je garde le Styx et refuse le passage aux morts, qui suis-je ?",
+        "reponse": "charon",
+        "indice": "Je navigue sur un fleuve"
+    },
+    {
+        "id": 3,
+        "question": "Je suis le dieu de la mer et des tempêtes dans la mythologie grecque, qui suis-je ?",
+        "reponse": "poseidon",
+        "indice": "Je brandis un trident"
+    },
+    {
+        "id": 4,
+        "question": "Je suis l'oiseau qui renaît de ses cendres, qui suis-je ?",
+        "reponse": "phoenix",
+        "indice": "Je suis immortel et flamboyant"
+    },
+    {
+        "id": 5,
+        "question": "Je suis le dieu grec de la guerre et de la violence, qui suis-je ?",
+        "reponse": "ares",
+        "indice": "Mon symbole est le casque et la lance"
+    }
+]
