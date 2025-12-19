@@ -5,6 +5,13 @@ import random
 import json
 import os
 
+"""
+Cog Enigmes
+Contient les commandes : /enigme (et /reponse), /classement et /classement_serveur
+Gère le système d'énigmes et de classements
+"""
+
+# Fichiers JSON
 USERS_FILE = "data/users.json"
 ENIGMES_FILE = "data/enigmes.json"
 
@@ -14,6 +21,7 @@ def load_json(file_path):
     with open(file_path, "r", encoding="utf-8") as f:
         return json.load(f)
 
+# fonction permettant de mettre à jour les données du fichier json
 def save_json(file_path, data):
     with open(file_path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=4, ensure_ascii=False)
@@ -33,6 +41,8 @@ class Enigmes(commands.Cog):
         self.enigmes_en_cours[user_id] = enigme
 
         if user_id not in self.users:
+            # ajoute les données de l'utilisateur dans users.json si il n'a jamais
+            # fait d'énigmes avant
             self.users[user_id] = {
                 "pseudo": interaction.user.name,
                 "enigmes_resolues": [],
@@ -48,6 +58,7 @@ class Enigmes(commands.Cog):
 
         save_json(USERS_FILE, self.users)
 
+        # création de l'embed qui présente la question
         embed = discord.Embed(
             title="🧩 Nouvelle énigme !",
             description=enigme["question"],

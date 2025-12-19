@@ -1,2 +1,2 @@
 bot discord *emoji feu*
-liste des commandes disponible avec /help
+liste des commandes disponible avec /commandes
