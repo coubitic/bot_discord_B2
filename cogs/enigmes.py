@@ -25,10 +25,6 @@ class Enigmes(commands.Cog):
         self.enigmes = load_json(ENIGMES_FILE)
         self.users = load_json(USERS_FILE)
 
-    @app_commands.command(name="ping_enigmes", description="Teste le cog Enigmes")
-    async def ping_enigmes(self, interaction: discord.Interaction):
-        await interaction.response.send_message("Cog énigmes actif ✅")
-
     @app_commands.command(name="enigme", description="Pose une énigme mythologique")
     async def enigme(self, interaction: discord.Interaction):
         enigme = random.choice(self.enigmes)
@@ -88,35 +84,13 @@ class Enigmes(commands.Cog):
                     self.users[user_id]["guilds"].append(guild_id)
 
             self.users[user_id]["score"] += 1
-            self.users[user_id]["enigmes_resolues"].append(enigme["id"])
+            if enigme["id"] not in self.users[user_id]["enigmes_resolues"]:
+                self.users[user_id]["enigmes_resolues"].append(enigme["id"])
             save_json(USERS_FILE, self.users)
 
             del self.enigmes_en_cours[user_id]
         else:
             await interaction.response.send_message(f"❌ Mauvaise réponse. Indice : {enigme['indice']}")
-
-    @app_commands.command(name="score", description="Affiche votre score")
-    async def score(self, interaction: discord.Interaction):
-        user_id = str(interaction.user.id)
-        guild_id = str(interaction.guild.id)
-
-        if user_id not in self.users:
-            self.users[user_id] = {
-                "pseudo": interaction.user.name,
-                "enigmes_resolues": [],
-                "score": 0,
-                "guilds": [guild_id]
-            }
-            save_json(USERS_FILE, self.users)
-
-        score = self.users[user_id]["score"]
-
-        embed = discord.Embed(
-            title=f"📝 Score de {interaction.user.name}",
-            description=f"Votre score actuel est : **{score}**",
-            color=discord.Color.green()
-        )
-        await interaction.response.send_message(embed=embed)
 
     @app_commands.command(name="classement", description="Affiche le top 5 des joueurs (global)")
     async def classement(self, interaction: discord.Interaction):

@@ -1,34 +1,36 @@
 import discord
 from discord.ext import commands
+from discord import app_commands
 from dotenv import load_dotenv
 import os
-import asyncio
 
-# Charger le .env
+# Charger le token depuis .env
 load_dotenv()
 TOKEN = os.getenv("DISCORD_TOKEN")
 
 # Intents
 intents = discord.Intents.default()
 intents.message_content = True
+intents.members = True
+
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# On affiche un message à la connexion et on synchronise les slash commands
+# ----------------- LOAD COGS -----------------
+async def load_cogs():
+    await bot.load_extension("cogs.enigmes")  # exemple pour le cog énigmes
+    await bot.load_extension("cogs.archives")  # cog archives (vide pour l'instant)
+
 @bot.event
 async def on_ready():
-    print(f"Bot connecté en tant que {bot.user}")
-    try:
-        synced = await bot.tree.sync()
-        print(f"{len(synced)} commandes slash synchronisées")
-    except Exception as e:
-        print(e)
+    print(f"Connecté en tant que {bot.user} !")
+    await bot.tree.sync()
+    print("Slash commands synchronisées !")
 
-# Charger les cogs avec await pour les slash commands
-async def load_cogs():
-    for ext in ["cogs.enigmes", "cogs.archives"]:
-        await bot.load_extension(ext)
+# ----------------- MAIN -----------------
+import asyncio
+async def main():
+    async with bot:
+        await load_cogs()
+        await bot.start(TOKEN)
 
-asyncio.run(load_cogs())
-
-# Lancer le bot
-bot.run(TOKEN)
+asyncio.run(main())
